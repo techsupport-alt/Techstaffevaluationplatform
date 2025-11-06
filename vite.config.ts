@@ -5,6 +5,8 @@ import { fileURLToPath } from 'url';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
+const isReplit = process.env.REPLIT_DEV_DOMAIN;
+
 export default defineConfig({
   plugins: [react()],
   resolve: {
@@ -59,8 +61,11 @@ export default defineConfig({
     host: '0.0.0.0',
     port: 5000,
     strictPort: true,
-    hmr: {
-      clientPort: 5000,
-    },
+    allowedHosts: true,
+    hmr: isReplit ? {
+      protocol: 'wss',
+      host: process.env.REPLIT_DEV_DOMAIN,
+      clientPort: 443,
+    } : true,
   },
 });
